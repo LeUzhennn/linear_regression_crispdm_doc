@@ -58,29 +58,27 @@ pip install -r requirements.txt
 
 **4. 執行應用程式**
 
-本專案包含三個不同版本的應用程式，您可以選擇執行其中一個：
+本專案已設定為多頁面應用程式。請執行主應用程式檔案：
 
 ```bash
-# 執行基本版
-streamlit run basic_app.py
-
-# 執行進階版 (多模型選擇)
-streamlit run advanced_app.py
-
-# 執行動畫模擬版
-streamlit run animation_app.py
+python -m streamlit run home.py
 ```
+執行後，應用程式將在您的瀏覽器中開啟，您可以在側邊欄中選擇不同的頁面（基本版、進階版、動畫模擬版）。
+
 ---
 
 ## 檔案結構
 
 ```
 .
-├── basic_app.py         # 版本1：基本線性回歸功能
-├── advanced_app.py      # 版本2：增加多模型選擇與下載功能
-├── animation_app.py     # 版本3：增加蒙地卡羅模擬動畫
-├── requirements.txt     # 專案依賴套件列表
-└── README.md            # 專案說明文件
+├── home.py                      # 應用程式主入口點 (Home Page)
+├── pages/
+│   ├── 01_basic_app.py          # 版本1：基本線性回歸功能
+│   ├── 02_advanced_app.py       # 版本2：增加多模型選擇與下載功能
+│   └── 03_animation_app.py      # 版本3：增加蒙地卡羅模擬動畫
+├── requirements.txt             # 專案依賴套件列表
+├── streamlit_multipage_apps.md  # Streamlit 多頁面應用程式說明文件
+└── README.md                    # 專案說明文件
 ```
 
 ---
