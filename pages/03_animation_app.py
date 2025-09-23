@@ -5,6 +5,7 @@ from sklearn.linear_model import LinearRegression
 import streamlit as st
 import tempfile
 import io
+from PIL import Image
 
 st.title("回歸線多次模擬動畫 (可下載)")
 
@@ -48,11 +49,25 @@ st.sidebar.header("下載動畫")
 
 if st.sidebar.button("生成 GIF"):
     with st.spinner("正在生成 GIF..."):
-        anim = FuncAnimation(fig, update, frames=num_simulations, init_func=init, blit=False, repeat=False)
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".gif") as tmpfile:
-            anim.save(tmpfile.name, writer=PillowWriter(fps=2))
-            with open(tmpfile.name, "rb") as f:
-                st.download_button("下載 GIF", data=f.read(), file_name="linear_regression_simulation.gif", mime="image/gif")
+        frames_list = []
+        # Ensure the figure is clean before starting to capture frames
+        fig.canvas.draw()
+        for i in range(num_simulations):
+            update(i) # Update the plot for the current frame
+            buf = io.BytesIO()
+            fig.savefig(buf, format='png') # Save current figure state to buffer
+            buf.seek(0)
+            frames_list.append(Image.open(buf)) # Open as PIL Image
+
+        if frames_list:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".gif") as tmpfile:
+                # Calculate duration based on fps
+                duration_ms = int(1000 / 2) # 2 fps -> 500ms per frame
+                frames_list[0].save(tmpfile.name, save_all=True, append_images=frames_list[1:], duration=duration_ms, loop=0)
+                with open(tmpfile.name, "rb") as f:
+                    st.download_button("下載 GIF", data=f.read(), file_name="linear_regression_simulation.gif", mime="image/gif")
+        else:
+            st.warning("沒有生成任何動畫幀。")
 
 if st.sidebar.button("生成 MP4"):
     st.warning("生成 MP4 需要在您的系統上安裝 FFMpeg。")
