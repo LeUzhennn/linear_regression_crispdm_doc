@@ -69,14 +69,4 @@ if st.sidebar.button("生成 GIF"):
         else:
             st.warning("沒有生成任何動畫幀。")
 
-if st.sidebar.button("生成 MP4"):
-    st.warning("生成 MP4 需要在您的系統上安裝 FFMpeg。")
-    try:
-        with st.spinner("正在生成 MP4..."):
-            anim = FuncAnimation(fig, update, frames=num_simulations, init_func=init, blit=False, repeat=False)
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmpfile:
-                anim.save(tmpfile.name, writer=FFMpegWriter(fps=2))
-                with open(tmpfile.name, "rb") as f:
-                    st.download_button("下載 MP4", data=f.read(), file_name="linear_regression_simulation.mp4", mime="video/mp4")
-    except FileNotFoundError:
-        st.error("無法生成 MP4。請確認您的系統已安裝 FFMpeg。")
+ 
