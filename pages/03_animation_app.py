@@ -38,7 +38,7 @@ def update(frame):
     ax.set_title(f"模擬 {frame+1}/{num_simulations} - y = {model.coef_[0][0]:.2f}x + {model.intercept_[0]:.2f}")
     return scatter, line
 
-anim = FuncAnimation(fig, update, frames=num_simulations, init_func=init, blit=False, repeat=False)
+ 
 
 # 在 Streamlit 中顯示動畫
 st.pyplot(fig)
@@ -48,6 +48,7 @@ st.sidebar.header("下載動畫")
 
 if st.sidebar.button("生成 GIF"):
     with st.spinner("正在生成 GIF..."):
+        anim = FuncAnimation(fig, update, frames=num_simulations, init_func=init, blit=False, repeat=False)
         with tempfile.NamedTemporaryFile(delete=False, suffix=".gif") as tmpfile:
             anim.save(tmpfile.name, writer=PillowWriter(fps=2))
             with open(tmpfile.name, "rb") as f:
@@ -57,6 +58,7 @@ if st.sidebar.button("生成 MP4"):
     st.warning("生成 MP4 需要在您的系統上安裝 FFMpeg。")
     try:
         with st.spinner("正在生成 MP4..."):
+            anim = FuncAnimation(fig, update, frames=num_simulations, init_func=init, blit=False, repeat=False)
             with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmpfile:
                 anim.save(tmpfile.name, writer=FFMpegWriter(fps=2))
                 with open(tmpfile.name, "rb") as f:
