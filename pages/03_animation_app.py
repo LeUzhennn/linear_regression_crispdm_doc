@@ -13,7 +13,7 @@ st.title("回歸線多次模擬動畫 (可下載)")
 a_true = st.sidebar.slider("斜率 a", -10.0, 10.0, 2.0)
 b_true = st.sidebar.slider("截距 b", -20.0, 20.0, 5.0)
 noise_std = st.sidebar.slider("雜訊標準差", 0.0, 10.0, 2.0)
-num_points = st.sidebar.slider("資料點數量", 10, 100, 30)
+num_points = st.sidebar.slider("資料點數量", 10, 500, 30)
 num_simulations = st.sidebar.slider("模擬次數", 1, 50, 10)
 
 X = np.linspace(0, 10, num_points).reshape(-1, 1)
